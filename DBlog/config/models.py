@@ -10,11 +10,11 @@ class Link(models.Model):
         (STATUS_DELETE,'删除'),
     )
     title = models.CharField(max_length=50, verbose_name = "标题")
-    href = models.URLField(verbise_name = "链接")
-    weight = models.PositiveIntegerField(default=1, choice = zip(range(1,6)), range(1,6),
+    href = models.URLField(verbose_name = "链接")
+    weight = models.PositiveIntegerField(default=1, choices = zip(range(1,6), range(1,6)),
                                          verbose_name = "权重", help_text = "权重高则展示顺序靠前")
     status = models.PositiveIntegerField(default=STATUS_NORMAL, choices = STATUS_ITEMS, verbose_name = "状态")
-    owner = models.ForeignKey(User, verbose_name = "作者")
+    owner = models.ForeignKey(User, on_delete = models.CASCADE, verbose_name = "作者")
     created_time = models.DateTimeField(auto_now_add=True, verbose_name = "创建时间")
 
     class Meta:
@@ -27,17 +27,17 @@ class SideBar(models.Model):
         (STATUS_HIDE, '隐藏'),
     )
     SIDE_TYPE = (
-        (1, 'HTML')
+        (1, 'HTML'),
         (2, '最新文章'),
         (3, '最热文章'),
         (4, '最近评论'),
     )
     title = models.CharField(max_length = 50, verbose_name = "标题")
-    display_type = models.PositiveIntegerField(default = 1, choices=SIDETYPE, verbose_name = "展示类型")
+    display_type = models.PositiveIntegerField(default = 1, choices=SIDE_TYPE, verbose_name = "展示类型")
     content = models.CharField(max_length = 500, blank = True, verbose_name = "内容",
                                help_text = "如果设置的不是HTML标签，可为空")
     status = models.PositiveIntegerField(default=STATUS_SHOW, choices = STATUS_ITEMS, verbose_name = "状态")
-    owner = models.ForeignKey(User, verbose_name = "作者")
+    owner = models.ForeignKey(User, on_delete = models.CASCADE, verbose_name = "作者")
     created_time = models.DateTimeField(auto_now_add = True, verbose_name = "创建时间")
 
     class Meta:

@@ -11,19 +11,19 @@ class Post(models.Model):
     STATUS_DELETE = 0
     STATUS_DRAFT = 2
     STATUS_ITEMS = [
-        (STATUS_NORMAL, '正常')
-        (STATUS_DELETE, '删除')
-        (STATUS_DRAFT, '草稿')
+        (STATUS_NORMAL, '正常'),
+        (STATUS_DELETE, '删除'),
+        (STATUS_DRAFT, '草稿'),
     ]
 
     title = models.CharField(max_length=255, verbose_name="标题")
     disc = models.CharField(max_length=255, blank=True, verbose_name="摘要")
     content = models.TextField(verbose_name = "正文", help_text = "正文必须为markdown格式")
     status = models.PositiveIntegerField(default=STATUS_NORMAL,
-                                         choice=STATUS_ITEMS, verbose_name="状态")
-    tag = models.ManyToManyField(Tag, verbose_name ="标签")
-    category = models.Foreignkey(Category, verbose_name = "分类")
-    owner = models.Foreignkey(User, verbose_name = "作者")
+                                         choices=STATUS_ITEMS, verbose_name="状态")
+    tag = models.ManyToManyField('Tag', verbose_name ="标签")
+    Category = models.ForeignKey('Category', on_delete = models.CASCADE, verbose_name = "分类")
+    owner = models.ForeignKey(User, on_delete = models.CASCADE, verbose_name = "作者")
     created_time = models.DateTimeField(auto_now_add = True, verbose_name = "创建时间")
 
     class Meta:
@@ -41,7 +41,7 @@ class Category(models.Model):
     name = models.CharField(max_length=50, verbose_name = "名称")
     status = models.PositiveIntegerField(default = STATUS_NORMAL, choices = STATUS_ITEMS, verbose_name = "状态")
     is_nav = models.BooleanField(default=False, verbose_name = "是否设置为导航")
-    owner = models.ForeignKey(User, verbose_name = "作者")
+    owner = models.ForeignKey(User, on_delete = models.CASCADE, verbose_name = "作者")
     create_time = models.DateTimeField(auto_now_add = True, verbose_name = "创建时间")
 
     class Meta:
@@ -51,13 +51,13 @@ class Tag(models.Model):
     STATUS_NORMAL = 1
     STATUS_DELETE = 0
     STATUS_ITEMS = (
-        (STATUS_NORMAL, "正常")
-        (STATUS_DELETE, "删除")
+        (STATUS_NORMAL, "正常"),
+        (STATUS_DELETE, "删除"),
     )
 
     name = models.CharField(max_length = 10, verbose_name = "名称")
-    status = models.PositiveIntegerField(default = STATUS_NORMAL, choice = STATUS_ITEMS, verbose_name = "状态")
-    owner = models.ForeignKey(User, verbose_name = "作者")
+    status = models.PositiveIntegerField(default = STATUS_NORMAL, choices = STATUS_ITEMS, verbose_name = "状态")
+    owner = models.ForeignKey(User, on_delete = models.CASCADE, verbose_name = "作者")
     created_time = models.DateTimeField(auto_now_add = True, verbose_name = "创建时间")
 
     class Meta:
