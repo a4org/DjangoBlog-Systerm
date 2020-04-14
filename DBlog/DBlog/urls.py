@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from .wadmin import wadminsite
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('wadmin/', wadminsite.urls)
 ]
