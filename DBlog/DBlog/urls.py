@@ -15,9 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url
 from .wadmin import wadminsite
+from blog.views import post_list, post_detail
+from config.views import links
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('wadmin/', wadminsite.urls)
+    path('wadmin/', wadminsite.urls),
+    url(r'^$', post_list),
+    url(r'^category/(?P<category_id>\d+)/$', post_list),
+    url(r'^tag/(?P<tag_id>\d+)/$', post_list),
+    url(r'^post/(?P<post_id>\d+).html$', post_detail),
+    url(r'^links/$', links),
 ]
