@@ -8,10 +8,12 @@ from .models import Category, Post, Tag
 from django.db.models import F, Count, Sum
 # Create your tests here
 
+
 class TastCategory(TestCase):
     @override_settings(DEBUG=True)
     def setUp(self):
-        self.user = user = User.objects.create_user('wange', 's1239587@ouhk.edu.hk', '88888888')
+        self.user = user = User.objects.create_user
+        ('wange', 's1239587@ouhk.edu.hk', '88888888')
         Category.objects.bulk_create([
             Category(name='cate_bulk_%s' % i, owner=user)
             for i in range(10)

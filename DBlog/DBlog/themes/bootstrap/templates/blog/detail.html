@@ -1,0 +1,17 @@
+{% extends "./base.html" %}
+{% block title %} {{ post.title }} {% endblock %}
+
+{% block main %}
+{% if post %}
+<div class="card post">
+    <div class="card-body">
+        <h5 class="card-title">{{ post.title }}</h5>
+        <span class="card-link">作者:{{ post.owner.username }}</span>
+        <span class="card-link">分类:<a href="/category/{{ post.Category.id }}">
+                {{ post.Category.name }}</a></span>
+        <hr/>
+        <p class="card-text">{{ post.content }}</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
