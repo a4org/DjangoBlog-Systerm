@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from .models import Post, Tag, Category
 from config.models import SideBar
@@ -54,6 +55,24 @@ class TagView(IndexView):
         queryset = super().get_queryset()
         tag_id = self.kwargs.get('tag_id')
         return queryset.filter(tag__id=tag_id)
+
+
+class SearchView(IndexView):
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        keyword = self.request.GET.get('keyword')
+        if not keyword:
+            return queryset
+        else:
+            return queryset.filter(Q(title__icontains=keyword) |
+                                   Q(disc__icontains=keyword))
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context.update({
+            'keyword': self.request.GET.get('keyword', '')
+        })
+        return context
 
 
 class PostDetailView(CommonViewMixin, DetailView):

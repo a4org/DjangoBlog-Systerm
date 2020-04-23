@@ -21,7 +21,7 @@ from config.views import links
 
 from blog.views import (
     IndexView, CategoryView, TagView,
-    PostDetailView
+    PostDetailView, SearchView
 )
 
 urlpatterns = [
@@ -34,4 +34,5 @@ urlpatterns = [
     url(r'^post/(?P<post_id>\d+).html$', PostDetailView.as_view(),
         name='post-detail'),
     url(r'^links/$', links, name='links'),
+    url(r'^search/$', SearchView.as_view(), name="Search")
 ]
