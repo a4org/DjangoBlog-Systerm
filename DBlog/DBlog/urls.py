@@ -18,6 +18,7 @@ from django.urls import path
 from django.conf.urls import url
 from .wadmin import wadminsite
 from config.views import links
+from comment.views import CommentView
 
 from blog.views import (
     IndexView, CategoryView, TagView,
@@ -34,5 +35,6 @@ urlpatterns = [
     url(r'^post/(?P<post_id>\d+).html$', PostDetailView.as_view(),
         name='post-detail'),
     url(r'^links/$', links, name='links'),
+    url(r'^comment/$', CommentView.as_view(), name="comment"),
     url(r'^search/$', SearchView.as_view(), name="Search")
 ]
