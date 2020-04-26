@@ -1,6 +1,11 @@
 {% extends "./base.html" %}
 {% block title %} {{ post.title }} {% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/googlecode.min.css">
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+{% endblock %}
 {% block main %}
 {% if post %}
 <div class="card post">
@@ -10,7 +15,11 @@
         <span class="card-link">分类:<a href="/category/{{ post.Category.id }}">
                 {{ post.Category.name }}</a></span>
         <hr/>
-        <p class="card-text">{{ post.content }}</p>
+        <p class="card-text">
+        {% autoescape off %}
+        {{ post.content_html }}
+        {% endautoescape %}
+        </p>
         <hr/>
         <div class="comment">
             <form class="form-group" action="/comment/" method="POST">
@@ -26,7 +35,9 @@
                         <a href="{{ comment.website }}">{{ comment.nick_name }}</a> in <span>{{ comment.created_time }}</span>
                     </div>
                     <div class="comment-content">
+                        {% autoescape off %}
                         {{ comment.content }}
+                        {% endautoescape %}
                     </div>
                 </li>
                 {% endfor %}

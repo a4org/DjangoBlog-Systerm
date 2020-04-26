@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import mistune
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -20,6 +21,8 @@ class Post(models.Model):
     disc = models.CharField(max_length=255, blank=True, verbose_name="摘要")
     content = models.TextField(verbose_name="正文",
                                help_text="正文必须为markdown格式")
+    content_html = models.TextField(verbose_name="正文html代码", blank=True,
+                                    editable=False)
     status = models.PositiveIntegerField(
         default=STATUS_NORMAL, choices=STATUS_ITEMS, verbose_name="状态")
     tag = models.ManyToManyField('Tag', verbose_name="标签")
@@ -63,6 +66,10 @@ class Post(models.Model):
     @classmethod
     def hot_posts(cls):
         return cls.objects.filter(status=cls.STATUS_NORMAL).order_by('-pv')
+
+    def save(self, *args, **kwargs):
+        self.content_html = mistune.markdown(self.content)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = verbose_name_plural = "文章"
